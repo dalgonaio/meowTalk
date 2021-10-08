@@ -16,10 +16,22 @@ const LoginScreen = ({navigation}) => {
         navigation.replace("Home")
       }
     });
-
     return unsubscribe;
   }, [])
-  const signIn = () => {}
+
+
+  const signIn = () => {
+    auth.signInWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    // Signed in
+    const user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    const errorMessage = error.message;
+    alert(errorMessage)
+  });
+  }
 
   return (
     <KeyboardAvoidingView behavior = "padding" style={styles.container}>
@@ -48,7 +60,7 @@ const LoginScreen = ({navigation}) => {
         value={password}
         onChangeText={(text) => setPassword(text)} />
       </View>
-      <Button buttonStyle={styles.button} onPress={signIn}title="Login"  />
+      <Button buttonStyle={styles.button} onPress={signIn} title="Login"  />
       <Button buttonStyle={styles.button} onPress= {()=> navigation.navigate('Register')}title="Register" />
       <View style={{height: 100}} />
     </KeyboardAvoidingView>
