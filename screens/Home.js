@@ -1,12 +1,33 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, {useLayoutEffect} from 'react'
+import { StyleSheet, Text, ScrollView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import CustomListItem from '../components/CustomListItem'
 
-const Home = () => {
+
+const Home = ({navigation}) => {
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Meow Talk",
+      headerStyle: {
+        backgroundColor: "#FFF",
+      },
+      headerTitleStyle: {
+        color: "#354A18"
+      },
+      headerTintColor: "black"
+    })
+  }, [])
+
+
   return (
-    <View>
-      <Text></Text>
-    </View>
+    <SafeAreaView>
+      <ScrollView>
+      <CustomListItem />
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
