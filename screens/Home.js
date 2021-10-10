@@ -26,7 +26,7 @@ const Home = ({navigation}) => {
       headerTitleStyle: {
         color: "#354A18",
       },
-      headerTintColor: "black",
+      headerTintColor: "white",
       headerLeft: () => (
       <View style ={{marginLeft: 20}} >
         <TouchableOpacity onPress={signOutUser}
