@@ -8,6 +8,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import Home from './screens/Home';
+import AddChatScreen from './screens/AddChatScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,10 @@ export default function App() {
           }}
           name="Home"
           component={Home}
+        />
+        <Stack.Screen
+          name="AddChat"
+          component={AddChatScreen}
         />
       </Stack.Navigator>
 
