@@ -13,7 +13,7 @@ const AddChatScreen = ({navigation}) => {
   const createChat = async () => {
     try {
       await db.collection('chats').add({
-        name: thisChatName,
+        chatName: thisChatName,
       });
       navigation.goBack();
     } catch (error) {
@@ -45,7 +45,11 @@ const AddChatScreen = ({navigation}) => {
 export default AddChatScreen;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: "white",
+    padding: 30,
+    height: "100%",
+  },
   button: {
     backgroundColor: '#718355',
     borderColor: '#718355',

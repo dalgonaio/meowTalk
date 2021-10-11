@@ -5,8 +5,8 @@ import {ListItem, Avatar} from 'react-native-elements';
 
 const CustomListItem = ({id, chatName, enterChat}) => {
   return (
-    <View>
-      <ListItem>
+    <View >
+      <ListItem key ={id} bottomDivider>
         <Avatar
           rounded
           source={{
@@ -14,7 +14,7 @@ const CustomListItem = ({id, chatName, enterChat}) => {
           }}
         />
         <ListItem.Content>
-          <ListItem.Title style={{fontWeight: '800', color: '#354A18'}}>Grumpy Cat</ListItem.Title>
+          <ListItem.Title style={{fontWeight: '800', color: '#354A18'}}>{chatName}</ListItem.Title>
           <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail"
           style={{color: '#354A18'}}>
             This is a test subtitle. I love cats. Dogs are your best friend but cats don't tell
@@ -29,4 +29,7 @@ const CustomListItem = ({id, chatName, enterChat}) => {
 export default CustomListItem;
 
 const styles = StyleSheet.create({
+  item: {
+    borderColor:'#718355',
+  },
 });
