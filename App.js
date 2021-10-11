@@ -9,6 +9,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import Home from './screens/Home';
 import AddChatScreen from './screens/AddChatScreen';
+import ChatScreen from './screens/ChatScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,12 +50,11 @@ export default function App() {
           name="AddChat"
           component={AddChatScreen}
         />
+      <Stack.Screen
+          name="Chat"
+          component={ChatScreen}
+        />
       </Stack.Navigator>
-
-      {/* <View style={styles.container}>
-      <Text>Hello World-Lupin!</Text>
-      <StatusBar style="auto" />
-    </View> */}
     </NavigationContainer>
   );
 }
