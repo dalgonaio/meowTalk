@@ -30,7 +30,7 @@ const Home = ({navigation}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "Meow Talk",
+      title: "meowTalk",
       headerStyle: {
         backgroundColor: "#FFF",
       },

@@ -9,7 +9,7 @@ const RegisterScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('https://image.freepik.com/free-vector/cute-avocado-cat-cartoon-character-animal-fruit-isolated_138676-3184.jpg');
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -22,7 +22,7 @@ const RegisterScreen = ({navigation}) => {
     .then((userCredential) => {
       userCredential.user.updateProfile({
         displayName: name,
-        photoURL: imageUrl || "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTIyfHxncnVtcHklMjBjYXR8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        photoURL: imageUrl
       })
     })
     .catch(error => alert(error.message));
@@ -33,7 +33,7 @@ const RegisterScreen = ({navigation}) => {
       <StatusBar style="light" />
 
       <Text h3 style={{marginBottom: 50}}>
-        Create a Meow Talk account
+        Create a meowTalk account
       </Text>
       <View style={styles.inputContainer}>
         <Input
@@ -62,7 +62,7 @@ const RegisterScreen = ({navigation}) => {
         <Input
           placeholder="Profile Picture Url (optional)"
           type="text"
-          value={imageUrl}
+          value=""
           onChangeText={(text) => setImageUrl(text)}
         />
 

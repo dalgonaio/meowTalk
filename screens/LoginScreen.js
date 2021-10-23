@@ -12,7 +12,7 @@ const LoginScreen = ({navigation}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "Meow Talk"
+      title: "meowTalk"
     });
   }, [navigation])
 

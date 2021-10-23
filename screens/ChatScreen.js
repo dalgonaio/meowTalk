@@ -16,12 +16,13 @@ import {
 import {Avatar} from 'react-native-elements';
 import {AndDesign, FontAwesome, Ionicons} from '@expo/vector-icons';
 import {StatusBar} from 'expo-status-bar';
-import { auth, db } from '../firebase';
-import * as firebase from "firebase"
-
+import {auth, db} from '../firebase';
+import * as firebase from 'firebase';
 
 const ChatScreen = ({navigation, route}) => {
   const [input, setInput] = useState('');
+  const [messages, setMessages] = useState([]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitleVisible: false,
@@ -33,12 +34,6 @@ const ChatScreen = ({navigation, route}) => {
             alignItems: 'center',
           }}
         >
-          <Avatar
-            rounded
-            source={{
-              uri: 'https://image.freepik.com/free-vector/cute-avocado-cat-cartoon-character-animal-fruit-isolated_138676-3184.jpg',
-            }}
-          />
           <Text
             style={{
               color: 'white',
@@ -46,7 +41,7 @@ const ChatScreen = ({navigation, route}) => {
               fontWeight: '800',
             }}
           >
-            {route.params.chatName}
+            meow {route.params.chatName}
           </Text>
         </View>
       ),
@@ -72,18 +67,33 @@ const ChatScreen = ({navigation, route}) => {
 
   const sendMessage = () => {
     Keyboard.dismiss();
-    db.collection("chats").doc(route.params.id)
-    .collection("messages")
-    .add({
-      timestamp:firebase.firestore.FieldValue.serverTimestamp(),
+    db.collection('chats').doc(route.params.id).collection('messages').add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       message: input,
       displayName: auth.currentUser.displayName,
       email: auth.currentUser.email,
       photoURL: auth.currentUser.photoURL,
-    })
+    });
 
-    setInput('')
+    setInput('');
   };
+
+  useLayoutEffect(() => {
+    const unsubscribe = db
+      .collection('chats')
+      .doc(route.params.id)
+      .collection('messages')
+      .orderBy('timestamp', 'asc')
+      .onSnapshot((snapshot) =>
+        setMessages(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        )
+      );
+    return unsubscribe;
+  }, [route]);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -96,19 +106,52 @@ const ChatScreen = ({navigation, route}) => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-          <ScrollView>{/* Chat goes here */}</ScrollView>
-          <View style={styles.footer}>
-            <TextInput
-              value={input}
-              onChangeText={(text) => setInput(text)}
-              onSubmitEditing={sendMessage}
-              placeholder="Your message here..."
-              styles={styles.textInput}
-            />
-            <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
-              <Ionicons name="send" size={24} color="#718355" />
-            </TouchableOpacity>
-          </View>
+            <ScrollView
+              contentContainerStyle={{
+                paddingTop: 15,
+              }}
+            >
+              {messages.map(({id, data}) =>
+                data.email === auth.currentUser.email ? (
+                  <View key={id} style={styles.me}>
+                    <Avatar
+                      position="absolute"
+                      rounded
+                      bottom={-15}
+                      right={-5}
+                      size={30}
+                      source={{uri: data.photoURL}}
+                    />
+                    <Text style={styles.myText}>{data.message}</Text>
+                  </View>
+                ) : (
+                  <View key={id} style={styles.them}>
+                    <Avatar
+                      position="absolute"
+                      rounded
+                      bottom={-15}
+                      left={-5}
+                      size={30}
+                      source={{uri: data.photoURL}}
+                    />
+                    <Text style={styles.theirText}>{data.message}</Text>
+                    <Text style={styles.theirName}>{data.displayName}</Text>
+                  </View>
+                )
+              )}
+            </ScrollView>
+            <View style={styles.footer}>
+              <TextInput
+                value={input}
+                onChangeText={(text) => setInput(text)}
+                onSubmitEditing={sendMessage}
+                placeholder="Your message here..."
+                styles={styles.textInput}
+              />
+              <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
+                <Ionicons name="send" size={24} color="#718355" />
+              </TouchableOpacity>
+            </View>
           </>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
@@ -137,5 +180,40 @@ const styles = StyleSheet.create({
     padding: 10,
     color: 'grey',
     borderRadius: 30,
+  },
+  myText: {
+    // color:"white",
+    fontWeight: '500',
+    marginLeft: 10,
+  },
+  theirText: {
+    fontWeight: '500',
+    marginLeft: 10,
+  },
+  theirName: {
+    right: 11,
+    paddingRight: 15,
+    fontSize: 10,
+    color: '#3d3c4a',
+  },
+  them: {
+    padding: 15,
+    backgroundColor: '#f0eae3',
+    alignSelf: 'flex-start',
+    borderRadius: 20,
+    marginRight: 15,
+    marginBottom: 20,
+    maxWidth: '80%',
+    position: 'relative',
+  },
+  me: {
+    padding: 15,
+    backgroundColor: '#c4cfb7',
+    alignSelf: 'flex-end',
+    borderRadius: 20,
+    marginRight: 15,
+    marginBottom: 20,
+    maxWidth: '80%',
+    position: 'relative',
   },
 });
