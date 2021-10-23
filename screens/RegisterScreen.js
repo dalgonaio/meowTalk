@@ -9,7 +9,7 @@ const RegisterScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [imageUrl, setImageUrl] = useState('https://image.freepik.com/free-vector/cute-avocado-cat-cartoon-character-animal-fruit-isolated_138676-3184.jpg');
+  const [imageUrl, setImageUrl] = useState('');
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -17,12 +17,17 @@ const RegisterScreen = ({navigation}) => {
     })
   }, [navigation])
 
+  const checkPhoto = ()=> {
+    if (imageUrl ===""){setImageUrl("https://ichef-bbci-co-uk.cdn.ampproject.org/i/s/ichef.bbci.co.uk/news/800/cpsprodpb/51F3/production/_106997902_gettyimages-611696954.jpg")}
+  };
+
   const submit = () => {
     auth.createUserWithEmailAndPassword(email, password)
+    .then(checkPhoto())
     .then((userCredential) => {
       userCredential.user.updateProfile({
         displayName: name,
-        photoURL: imageUrl
+        photoURL: imageUrl || "https://ichef-bbci-co-uk.cdn.ampproject.org/i/s/ichef.bbci.co.uk/news/800/cpsprodpb/51F3/production/_106997902_gettyimages-611696954.jpg"
       })
     })
     .catch(error => alert(error.message));
@@ -62,7 +67,7 @@ const RegisterScreen = ({navigation}) => {
         <Input
           placeholder="Profile Picture Url (optional)"
           type="text"
-          value=""
+          value={imageUrl}
           onChangeText={(text) => setImageUrl(text)}
         />
 

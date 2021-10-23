@@ -37,7 +37,7 @@ const AddChatScreen = ({navigation}) => {
         onChangeText={(text) => setThisChatName(text)}
         leftIcon={<Icon name="wechat" type="antdesign" size={24} color="#718355" />}
       />
-      <Button buttonStyle={styles.button} onPress={createChat} title="Create new chat" />
+      <Button buttonStyle={styles.button} disabled={!thisChatName} onPress={createChat} title="Create new chat" />
     </View>
   );
 };
@@ -47,6 +47,8 @@ export default AddChatScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 30,
     height: "100%",
   },
